@@ -43,22 +43,23 @@ public class GamePlay {
   private Display display;
   Readable input;
   Appendable output;
+  Scanner scanner;
 
   GamePlay(Readable input, Appendable output) {
     this.input = input;
     this.output = output;
 
+    scanner = new Scanner(this.input);
     display = new Display(output);
   }
 
   /**
    * Display the prompt to the user and retrieve the size of the board from the user's input
-   *
-   * @param scanner to scan user's input
    */
-  public void getBoardSize(Scanner scanner) {
+  public void getBoardSize() {
     display.showPrompt("Hello! Welcome to the OOD BattleSalvo Game!");
     display.showPrompt("Please enter a valid height and width below:");
+
     height = scanner.nextInt();
     width = scanner.nextInt();
     while ((height < 6 || height > 15) || (width < 6 || width > 15)) {
@@ -76,7 +77,7 @@ public class GamePlay {
    *
    * @param scanner to scan user's input
    */
-  public void getFleet(Scanner scanner) {
+  public void getFleet() {
     int maxSize = Math.min(height, width);
     display.showPrompt("Please enter your fleet in the order [Carrier, Battleship, Destroyer,"
         + " Submarine], you need at least one for each type.\n"
@@ -207,11 +208,12 @@ public class GamePlay {
    *
    * @param scanner to scan user's input
    */
-  public void startGame(Scanner scanner) {
-    getBoardSize(scanner);
+  public void startGame() {
+    Scanner scanner = new Scanner(this.input);
+    getBoardSize();
     human = new Human(this);
     computer = new Ai(this);
-    getFleet(scanner);
+    getFleet();
     display.showPrompt("Opponent Board Data:");
     computer.setup(height, width, fleet);
     display.displayBoard(aiBoard);
