@@ -23,7 +23,7 @@ class AiTest {
    */
   @BeforeEach
   public void setUp() {
-    gp = new GamePlay();
+//    gp = new GamePlay(); //TODO
     computer = new Ai(gp);
     fleet = new HashMap<>();
     fleet.put(ShipType.CARRIER, 1);

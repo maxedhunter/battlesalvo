@@ -3,10 +3,6 @@ package cs3500.pa03.view;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import cs3500.pa03.model.OpponentBoard;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,42 +10,16 @@ import org.junit.jupiter.api.Test;
  * This is the test class for the Display class
  */
 class DisplayTest {
-  private final InputStream systemIn = System.in;
-  private final PrintStream systemOut = System.out;
-  private ByteArrayOutputStream testOut;
+  Appendable output;
   private Display display;
-
-  /**
-   * Set the output
-   */
-  @BeforeEach
-  public void setUpOutput() {
-    testOut = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(testOut));
-  }
-
-  /**
-   * Get the output
-   */
-  private String getOutput() {
-    return testOut.toString();
-  }
-
-  /**
-   * Restore the input and output to system default
-   */
-  @AfterEach
-  public void restoreSystemInputOutput() {
-    System.setIn(systemIn);
-    System.setOut(systemOut);
-  }
 
   /**
    * Initializes display
    */
   @BeforeEach
   public void setUp() {
-    display = new Display();
+    output = new StringBuilder();
+    display = new Display(output);
   }
 
 
@@ -60,7 +30,15 @@ class DisplayTest {
   public void testShowPrompt() {
     String prompt = "This is a test prompt.";
     display.showPrompt(prompt);
-    assertEquals(prompt + System.lineSeparator(), getOutput());
+    assertEquals(prompt + System.lineSeparator(), output.toString());
+  }
+
+  /**
+   * Tests whether the message handles an append error.
+   */
+  @Test
+  public void testShowPromptException() {
+    //TODO
   }
 
   /**
@@ -78,6 +56,14 @@ class DisplayTest {
         + "- - - - - - \n";
 
     display.displayBoard(board);
-    assertEquals(expected, getOutput());
+    assertEquals(expected, output.toString());
+  }
+
+  /**
+   * Tests whether the display board method handles an appending error.
+   */
+  @Test
+  void testDisplayBoardException() {
+    //TODO
   }
 }

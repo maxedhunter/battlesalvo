@@ -34,7 +34,7 @@ class GamePlayTest {
    */
   @BeforeEach
   public void setup() {
-    gp = new GamePlay();
+//    gp = new GamePlay(); //TODO fix this constructor set up
   }
 
   /**

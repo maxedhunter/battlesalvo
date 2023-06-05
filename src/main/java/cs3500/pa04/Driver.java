@@ -17,7 +17,7 @@ public class Driver {
    */
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
-    GamePlay gp = new GamePlay();
-    gp.startGame(scanner);
+//    GamePlay gp = new GamePlay(); //TODO fix constructors
+//    gp.startGame(scanner);
   }
 }

@@ -23,7 +23,7 @@ class HumanTest {
    */
   @BeforeEach
   public void setUp() {
-    gp = new GamePlay();
+//    gp = new GamePlay(); //TODO fix this
     human = new Human(gp);
     fleet = new HashMap<>();
     fleet.put(ShipType.CARRIER, 1);

@@ -40,7 +40,16 @@ public class GamePlay {
   // shots from the AI
   private List<Coord> aiShots = new ArrayList<>();
   // Display
-  private Display display = new Display();
+  private Display display;
+  Readable input;
+  Appendable output;
+
+  GamePlay(Readable input, Appendable output) {
+    this.input = input;
+    this.output = output;
+
+    display = new Display(output);
+  }
 
   /**
    * Display the prompt to the user and retrieve the size of the board from the user's input
