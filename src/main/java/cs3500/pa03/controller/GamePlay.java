@@ -34,18 +34,24 @@ public class GamePlay {
   // width of the board
   private int width;
   // specifications of the feet
-  private Map<ShipType, Integer> fleet = new HashMap<>();
+  private final Map<ShipType, Integer> fleet = new HashMap<>();
   // shots from the players
   private List<Coord> playerShots = new ArrayList<>();
   // shots from the AI
   private List<Coord> aiShots = new ArrayList<>();
   // Display
-  private Display display;
+  private final Display display;
   Readable input;
   Appendable output;
   Scanner scanner;
 
-  GamePlay(Readable input, Appendable output) {
+  /**
+   * Initializes a readable and appendable for game play.
+   *
+   * @param input source of data for the program
+   * @param output where the output is displayed
+   */
+  public GamePlay(Readable input, Appendable output) {
     this.input = input;
     this.output = output;
 
@@ -74,8 +80,6 @@ public class GamePlay {
 
   /**
    * Display the prompt to the user and retrieve the fleet specifications from the user's input
-   *
-   * @param scanner to scan user's input
    */
   public void getFleet() {
     int maxSize = Math.min(height, width);
@@ -94,8 +98,7 @@ public class GamePlay {
         || fleet.get(ShipType.BATTLESHIP) <= 0 || fleet.get(ShipType.DESTROYER) <= 0
         || fleet.get(ShipType.SUBMARINE) <= 0) {
       fleet.clear();
-      display.showPrompt(
-          "Uh Oh! You've entered invalid fleet sizes.\n"
+      display.showPrompt("Uh Oh! You've entered invalid fleet sizes.\n"
               + "Please reenter your fleet in the order [Carrier, Battleship, Destroyer,"
               + " Submarine].\n"
               + "Remember, your fleet may not exceed size 6, and you need one for each.");
@@ -205,11 +208,8 @@ public class GamePlay {
 
   /**
    * The setup and start of the game
-   *
-   * @param scanner to scan user's input
    */
   public void startGame() {
-    Scanner scanner = new Scanner(this.input);
     getBoardSize();
     human = new Human(this);
     computer = new Ai(this);
