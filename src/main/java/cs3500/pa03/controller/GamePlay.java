@@ -7,7 +7,6 @@ import cs3500.pa03.model.GameResult;
 import cs3500.pa03.model.Human;
 import cs3500.pa03.model.OpponentBoard;
 import cs3500.pa03.model.Player;
-import cs3500.pa03.model.Ship;
 import cs3500.pa03.model.ShipType;
 import cs3500.pa03.model.UserBoard;
 import cs3500.pa03.view.Display;
@@ -35,22 +34,38 @@ public class GamePlay {
   // width of the board
   private int width;
   // specifications of the feet
-  private Map<ShipType, Integer> fleet = new HashMap<>();
+  private final Map<ShipType, Integer> fleet = new HashMap<>();
   // shots from the players
   private List<Coord> playerShots = new ArrayList<>();
   // shots from the AI
   private List<Coord> aiShots = new ArrayList<>();
   // Display
-  private Display display = new Display();
+  private final Display display;
+  Readable input;
+  Appendable output;
+  Scanner scanner;
+
+  /**
+   * Initializes a readable and appendable for game play.
+   *
+   * @param input source of data for the program
+   * @param output where the output is displayed
+   */
+  public GamePlay(Readable input, Appendable output) {
+    this.input = input;
+    this.output = output;
+
+    scanner = new Scanner(this.input);
+    display = new Display(output);
+  }
 
   /**
    * Display the prompt to the user and retrieve the size of the board from the user's input
-   *
-   * @param scanner to scan user's input
    */
-  public void getBoardSize(Scanner scanner) {
+  public void getBoardSize() {
     display.showPrompt("Hello! Welcome to the OOD BattleSalvo Game!");
     display.showPrompt("Please enter a valid height and width below:");
+
     height = scanner.nextInt();
     width = scanner.nextInt();
     while ((height < 6 || height > 15) || (width < 6 || width > 15)) {
@@ -65,10 +80,8 @@ public class GamePlay {
 
   /**
    * Display the prompt to the user and retrieve the fleet specifications from the user's input
-   *
-   * @param scanner to scan user's input
    */
-  public void getFleet(Scanner scanner) {
+  public void getFleet() {
     int maxSize = Math.min(height, width);
     display.showPrompt("Please enter your fleet in the order [Carrier, Battleship, Destroyer,"
         + " Submarine], you need at least one for each type.\n"
@@ -85,8 +98,7 @@ public class GamePlay {
         || fleet.get(ShipType.BATTLESHIP) <= 0 || fleet.get(ShipType.DESTROYER) <= 0
         || fleet.get(ShipType.SUBMARINE) <= 0) {
       fleet.clear();
-      display.showPrompt(
-          "Uh Oh! You've entered invalid fleet sizes.\n"
+      display.showPrompt("Uh Oh! You've entered invalid fleet sizes.\n"
               + "Please reenter your fleet in the order [Carrier, Battleship, Destroyer,"
               + " Submarine].\n"
               + "Remember, your fleet may not exceed size 6, and you need one for each.");
@@ -196,14 +208,12 @@ public class GamePlay {
 
   /**
    * The setup and start of the game
-   *
-   * @param scanner to scan user's input
    */
-  public void startGame(Scanner scanner) {
-    getBoardSize(scanner);
+  public void startGame() {
+    getBoardSize();
     human = new Human(this);
     computer = new Ai(this);
-    getFleet(scanner);
+    getFleet();
     display.showPrompt("Opponent Board Data:");
     computer.setup(height, width, fleet);
     display.displayBoard(aiBoard);

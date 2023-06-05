@@ -3,6 +3,7 @@ package cs3500.pa03.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import cs3500.pa03.controller.GamePlay;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
  * This is the test class for Ai class
  */
 class AiTest {
-  private GamePlay gp;
   private Ai computer;
   private Map<ShipType, Integer> fleet;
 
@@ -23,7 +23,9 @@ class AiTest {
    */
   @BeforeEach
   public void setUp() {
-    gp = new GamePlay();
+    Readable input = new StringReader("");
+    Appendable output = new StringBuilder();
+    GamePlay gp = new GamePlay(input, output);
     computer = new Ai(gp);
     fleet = new HashMap<>();
     fleet.put(ShipType.CARRIER, 1);
