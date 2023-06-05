@@ -7,7 +7,6 @@ import cs3500.pa03.model.GameResult;
 import cs3500.pa03.model.Human;
 import cs3500.pa03.model.OpponentBoard;
 import cs3500.pa03.model.Player;
-import cs3500.pa03.model.Ship;
 import cs3500.pa03.model.ShipType;
 import cs3500.pa03.model.UserBoard;
 import cs3500.pa03.view.Display;
