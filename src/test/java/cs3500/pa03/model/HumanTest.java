@@ -17,16 +17,19 @@ import org.junit.jupiter.api.Test;
 class HumanTest {
   private Human human;
   private Map<ShipType, Integer> fleet;
+  private GamePlay gp;
+  private Readable input;
+  private Appendable output;
 
   /**
    * Initializes gp, human, and the fleet
    */
   @BeforeEach
   public void setUp() {
-    Readable input = new StringReader("");
-    Appendable output = new StringBuilder();
+    input = new StringReader("");
+    output = new StringBuilder();
 
-    GamePlay gp = new GamePlay(input, output);
+    gp = new GamePlay(input, output);
     human = new Human(gp);
     fleet = new HashMap<>();
     fleet.put(ShipType.CARRIER, 1);
@@ -56,7 +59,26 @@ class HumanTest {
    */
   @Test
   public void takeShot() {
+    String inputString = "6 6\n1 1 1 1\n0 0 0 1 0 2 0 3 0 4";
+    Readable inputShots = new StringReader(inputString);
+    GamePlay gp1 = new GamePlay(inputShots, output);
+    Human human1 = new Human(gp1);
 
+    List<Coord> shots = new ArrayList<>();
+    shots.add(new Coord(0, 0));
+    shots.add(new Coord(0, 1));
+    shots.add(new Coord(0, 2));
+    shots.add(new Coord(0, 3));
+    Map<ShipType, Integer> fleet = new HashMap<>();
+    fleet.put(ShipType.CARRIER, 1);
+    fleet.put(ShipType.BATTLESHIP, 1);
+    fleet.put(ShipType.DESTROYER, 1);
+    fleet.put(ShipType.SUBMARINE, 1);
+    gp1.getBoardSize();;
+    gp1.getFleet();
+    human1.setup(6, 6, fleet);
+
+    assertEquals(shots, human1.takeShots());
   }
 
   /**

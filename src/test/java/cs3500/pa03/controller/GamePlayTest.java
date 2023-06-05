@@ -67,7 +67,7 @@ class GamePlayTest {
   }
 
   /**
-   * Tests the getFleet() method
+   * Tests the getFleet method
    */
   @Test
   public void testGetFleet() {
@@ -104,6 +104,32 @@ class GamePlayTest {
         + "Please reenter your fleet in the order [Carrier, Battleship, Destroyer,"
         + " Submarine].\n"
         + "Remember, your fleet may not exceed size 6, and you need one for each.\n", outputString);
+  }
+
+  /**
+   * Tests the getFleet method
+   */
+  @Test
+  public void testGetShot() {
+    String inputString = "6 6\n1 1 1 1\n 8 0\n 0 8\n -1 0\n 0 -1\n 0 0 0 1 0 2 0 3 0 4";
+    Readable input = new StringReader(inputString);
+
+    gamePlay = new GamePlay(input, output);
+    gamePlay.getBoardSize();
+    gamePlay.getFleet();
+    gamePlay.getShots(4);
+
+    String outputString = output.toString();
+    assertEquals("Hello! Welcome to the OOD BattleSalvo Game!\n"
+        + "Please enter a valid height and width below:\n"
+        + "Please enter your fleet in the order [Carrier, Battleship, Destroyer,"
+        + " Submarine], you need at least one for each type.\n"
+        + "Remember, your fleet may not exceed size 6.\n"
+        + "Please enter 4 shots.\n"
+        + "Invalid shot coordinates. Please try again.\n"
+        + "Invalid shot coordinates. Please try again.\n"
+        + "Invalid shot coordinates. Please try again.\n"
+        + "Invalid shot coordinates. Please try again.\n", outputString);
   }
 
   /**

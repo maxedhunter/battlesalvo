@@ -120,7 +120,6 @@ public class GamePlay {
    * @return list of Coord representing each shot
    */
   public List<Coord> getShots(int numOfShots) {
-    Scanner scanner = new Scanner(System.in);
     display.showPrompt("Please enter " + numOfShots + " shots.");
     int i = 0;
     while (i < numOfShots) {
