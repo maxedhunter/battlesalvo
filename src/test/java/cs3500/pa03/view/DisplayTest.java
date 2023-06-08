@@ -1,6 +1,7 @@
 package cs3500.pa03.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import cs3500.pa03.model.OpponentBoard;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,9 @@ class DisplayTest {
    */
   @Test
   public void testShowPromptException() {
-    //TODO
+    display = new Display(new MockAppendable());
+    assertThrows(IllegalArgumentException.class,
+        () -> display.showPrompt(""));
   }
 
   /**
@@ -64,6 +67,17 @@ class DisplayTest {
    */
   @Test
   void testDisplayBoardException() {
-    //TODO
+    OpponentBoard board = new OpponentBoard(6, 6);
+    board.initialize();
+    String expected = "- - - - - - \n"
+        + "- - - - - - \n"
+        + "- - - - - - \n"
+        + "- - - - - - \n"
+        + "- - - - - - \n"
+        + "- - - - - - \n";
+
+    display = new Display(new MockAppendable());
+    assertThrows(IllegalArgumentException.class,
+        () -> display.displayBoard(board));
   }
 }
