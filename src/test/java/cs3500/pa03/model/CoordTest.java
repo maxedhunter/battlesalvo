@@ -28,19 +28,19 @@ class CoordTest {
   }
 
   /**
-   * Tests if the getRow method works properly
+   * Tests if the getX method works properly
    */
   @Test
   public void testGetRow() {
-    assertEquals(1, c3.getRow());
+    assertEquals(1, c3.getX());
   }
 
   /**
-   * Tests if the getCol method works properly
+   * Tests if the getY method works properly
    */
   @Test
   public void testGetCol() {
-    assertEquals(2, c3.getCol());
+    assertEquals(2, c3.getY());
   }
 
   /**

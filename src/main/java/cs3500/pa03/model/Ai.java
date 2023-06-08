@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Ai implements Player {
   // a GameStatus
-  private GameStatus gs = new GameStatus();
+  private final GameStatus gs = new GameStatus();
   // AI's board
   private OpponentBoard board;
   // a game result
@@ -19,11 +19,11 @@ public class Ai implements Player {
   // AI's fleet
   private List<Ship> aiShips;
   // shots that hits the opponent
-  private List<Coord> hitOpponent = new ArrayList<>();
+  private final List<Coord> hitOpponent = new ArrayList<>();
   // shots that has already been fired
-  private List<Coord> alreadyShot = new ArrayList<>();
+  private final List<Coord> alreadyShot = new ArrayList<>();
   // a gamePlay controller
-  private GamePlay gp;
+  private final GamePlay gp;
 
   /**
    * Constructor of the Ai class that initializes the gp
@@ -120,7 +120,7 @@ public class Ai implements Player {
       for (Ship ship : aiShips) {
         List<Coord> updatedPos = new ArrayList<>(ship.getOccupiedPositions());
         for (Coord pos : ship.getOccupiedPositions()) {
-          if (shot.getRow() == pos.getRow() && shot.getCol() == pos.getCol()) {
+          if (shot.getX() == pos.getX() && shot.getY() == pos.getY()) {
             updatedPos.remove(pos);
             damaged.add(pos);
           }

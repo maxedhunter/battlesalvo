@@ -1,5 +1,8 @@
 package cs3500.pa03.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Represents a coordinate on the board
  */
@@ -48,11 +51,10 @@ public class Coord {
     if (object == this) {
       return true;
     }
-    if (!(object instanceof Coord)) {
+    if (!(object instanceof Coord pos)) {
       return false;
     }
-    Coord pos = (Coord) object;
-    return this.getRow() == pos.getRow() && this.getCol() == pos.getCol();
+    return this.getX() == pos.getX() && this.getY() == pos.getY();
   }
 
   /**
@@ -63,8 +65,8 @@ public class Coord {
   @Override
   public int hashCode() {
     int result = 17;
-    result = 31 * result + this.getCol();
-    result = 31 * result + this.getRow();
+    result = 31 * result + this.getY();
+    result = 31 * result + this.getX();
     return result;
   }
 }

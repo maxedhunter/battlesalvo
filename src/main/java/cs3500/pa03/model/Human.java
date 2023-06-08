@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class Human implements Player {
   // a gameStatus
-  private GameStatus gs = new GameStatus();
+  private final GameStatus gs = new GameStatus();
   // a user's board
   private UserBoard board;
   // game result
@@ -18,13 +18,13 @@ public class Human implements Player {
   // player's fleet
   private List<Ship> playerShips;
   // shots that hits the opponent's ships
-  private List<Coord> hitOpponent = new ArrayList<>();
+  private final List<Coord> hitOpponent = new ArrayList<>();
   // spots that can be shoot
-  private List<Coord> canShoot = new ArrayList<>();
+  private final List<Coord> canShoot = new ArrayList<>();
   // shots fired
   private List<Coord> shots;
   // a gamePlay controller
-  private GamePlay gp;
+  private final GamePlay gp;
 
   /**
    * Constructor of the Human class that initializes the gp
@@ -118,7 +118,7 @@ public class Human implements Player {
       for (Ship ship : playerShips) {
         List<Coord> updatedPos = new ArrayList<>(ship.getOccupiedPositions());
         for (Coord pos : ship.getOccupiedPositions()) {
-          if (shot.getRow() == pos.getRow() && shot.getCol() == pos.getCol()) {
+          if (shot.getX() == pos.getX() && shot.getY() == pos.getY()) {
             updatedPos.remove(pos);
             damaged.add(pos);
           }
