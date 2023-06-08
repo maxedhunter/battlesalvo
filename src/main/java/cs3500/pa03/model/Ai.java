@@ -94,9 +94,9 @@ public class Ai implements Player {
       shotSize = notSank.size();
     }
     while (shots.size() < shotSize) {
-      int row = random.nextInt(board.getWidth());
-      int col = random.nextInt(board.getHeight());
-      Coord newShot = new Coord(row, col);
+      int col = random.nextInt(board.getWidth());
+      int row = random.nextInt(board.getHeight());
+      Coord newShot = new Coord(col, row);
       if (!alreadyShot.contains(newShot)) {
         shots.add(newShot);
         alreadyShot.add(newShot);

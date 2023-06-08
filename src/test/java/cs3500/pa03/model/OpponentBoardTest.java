@@ -94,8 +94,8 @@ class OpponentBoardTest {
       }
     }
     expected[1][1] = '/';
-    expected[2][1] = '/';
-    expected[3][2] = '/';
+    expected[1][2] = '/';
+    expected[2][3] = '/';
     assertArrayEquals(expected, ob.getGrid());
   }
 
@@ -123,8 +123,8 @@ class OpponentBoardTest {
       }
     }
     expected[0][0] = '*';
-    expected[0][1] = '*';
-    expected[0][2] = '*';
+    expected[1][0] = '*';
+    expected[2][0] = '*';
 
     List<Coord> missed = new ArrayList<>();
     missed.add(new Coord(0, 0));

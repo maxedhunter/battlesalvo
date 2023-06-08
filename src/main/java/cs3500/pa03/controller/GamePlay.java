@@ -126,7 +126,7 @@ public class GamePlay {
       int x = scanner.nextInt();
       int y = scanner.nextInt();
       playerShots.add(new Coord(x, y));
-      if ((x >= height || x < 0) || (y >= width || y < 0)) {
+      if ((x >= width || x < 0) || (y >= height || y < 0)) {
         playerShots.clear();
         display.showPrompt("Invalid shot coordinates. Please try again.");
         i = 0;
@@ -186,6 +186,7 @@ public class GamePlay {
   public void gameLoop() {
     while (!userBoard.allSunk() && !aiBoard.allSunk()) {
       aiShots = computer.takeShots();
+      System.out.println(aiShots);
       playerShots = human.takeShots();
       display.showPrompt("Opponent Board Data:");
       aiBoard.updateMissed(playerShots);

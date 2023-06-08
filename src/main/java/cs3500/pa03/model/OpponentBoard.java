@@ -113,8 +113,8 @@ public class OpponentBoard implements Board {
   @Override
   public void updateMissed(List<Coord> shots) {
     for (Coord pos : shots) {
-      if (grid[pos.getRow()][pos.getCol()] != '*') {
-        grid[pos.getRow()][pos.getCol()] = '/';
+      if (grid[pos.getY()][pos.getX()] != '*') {
+        grid[pos.getY()][pos.getX()] = '/';
       }
     }
   }
@@ -127,7 +127,7 @@ public class OpponentBoard implements Board {
   @Override
   public void updateHit(List<Coord> shotsHit) {
     for (Coord pos : shotsHit) {
-      grid[pos.getRow()][pos.getCol()] = '*';
+      grid[pos.getY()][pos.getX()] = '*';
     }
   }
 }

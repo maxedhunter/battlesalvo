@@ -38,16 +38,16 @@ public class ShipGenerator {
         int currentCol;
 
         if (isVertical) {
-          currentRow = row + i;
-          currentCol = col;
-        } else {
           currentRow = row;
           currentCol = col + i;
+        } else {
+          currentRow = row + i;
+          currentCol = col;
         }
 
         if (isValidPos(currentRow, currentCol, board)
-            && !isPosOccupied(new Coord(currentRow, currentCol), occupied)) {
-          occupiedPos.add(new Coord(currentRow, currentCol));
+            && !isPosOccupied(new Coord(currentCol, currentRow), occupied)) {
+          occupiedPos.add(new Coord(currentCol, currentRow));
         } else {
           occupiedPos.clear();
           break;
@@ -75,9 +75,9 @@ public class ShipGenerator {
    * @return whether the position is valid or not
    *
    */
-  private static boolean isValidPos(int row, int col, Board board) {
-    return row >= 0 && row < board.getHeight()
-        && col >= 0 && col < board.getWidth();
+  private static boolean isValidPos(int col, int row, Board board) {
+    return row >= 0 && row < board.getWidth()
+        && col >= 0 && col < board.getHeight();
   }
 
   /**

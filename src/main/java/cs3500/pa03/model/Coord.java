@@ -7,20 +7,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Represents a coordinate on the board
  */
 public class Coord {
-  // the row the coordinate is on (x coordinate)
-  private int row;
-  // the column the coordinate is on (y coordinate)
-  private int col;
+  // the column the coordinate is on (x coordinate)
+  private final int x;
+  // the row the coordinate is on (y coordinate)
+  private final int y;
 
   /**
    * Constructor for the Coord class, initializes row and col
    *
-   * @param row x coordinate on the board
-   * @param col y coordinate on the board
+   * @param x x coordinate on the board
+   * @param y y coordinate on the board
    */
-  public Coord(int row, int col) {
-    this.row = row;
-    this.col = col;
+  @JsonCreator
+  public Coord(@JsonProperty("x") int x,
+               @JsonProperty("y") int y) {
+    this.x = x;
+    this.y = y;
   }
 
   /**
@@ -28,8 +30,8 @@ public class Coord {
    *
    * @return row on the board
    */
-  public int getRow() {
-    return this.row;
+  public int getX() {
+    return this.x;
   }
 
   /**
@@ -37,8 +39,8 @@ public class Coord {
    *
    * @return column on the board
    */
-  public int getCol() {
-    return this.col;
+  public int getY() {
+    return this.y;
   }
 
   /**
@@ -69,4 +71,5 @@ public class Coord {
     result = 31 * result + this.getX();
     return result;
   }
+
 }
