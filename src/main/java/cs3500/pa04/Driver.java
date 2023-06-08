@@ -8,9 +8,7 @@ import java.io.InputStreamReader;
  */
 public class Driver {
   /**
-   * Project entry point, when the board is not generating please just rerun it,
-   * it might be because there are too many large ships but the algorithm couldn't find a way to fit
-   * them all. I promise the game is smooth most of the time though.
+   * Project entry point6
    *
    * @param args - no command line args required
    */
