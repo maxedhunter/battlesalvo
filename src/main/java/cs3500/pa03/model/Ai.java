@@ -41,7 +41,7 @@ public class Ai implements Player {
    */
   @Override
   public String name() {
-    return "AI";
+    return "shuerry";
   }
 
   /**

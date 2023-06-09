@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cs3500.pa03.model.GameResult;
 import cs3500.pa03.model.Player;
+import cs3500.pa04.json.GameType;
 import cs3500.pa04.json.JsonUtils;
 import cs3500.pa04.json.MessageJson;
 import java.io.IOException;
@@ -62,8 +63,7 @@ public class ProxyController {
   }
 
   /**
-   * Determines the type of request the server has sent ("guess" or "win") and delegates to the
-   * corresponding helper method with the message arguments.
+   * Delegates the corresponding helper method with the message arguments.
    *
    * @param message the MessageJSON used to determine what the server has sent
    */
@@ -73,14 +73,14 @@ public class ProxyController {
 
     if ("join".equals(name)) {
       join();
-    } else if ("setup".equals(name)) {
-      setup(arguments);
-    } else if ("take-shots".equals(name)) {
-      takeShot();
-    } else if ("report-damage".equals(name)) {
-      reportDamage(arguments);
-    } else if ("successful-hits".equals(name)) {
-      successfulHits(arguments);
+//    } else if ("setup".equals(name)) {
+//      setup(arguments);
+//    } else if ("take-shots".equals(name)) {
+//      takeShot();
+//    } else if ("report-damage".equals(name)) {
+//      reportDamage(arguments);
+//    } else if ("successful-hits".equals(name)) {
+//      successfulHits(arguments);
     } else if ("end-game".equals(name)) {
       endGame(arguments);
     } else {
@@ -88,29 +88,42 @@ public class ProxyController {
     }
   }
 
-  private JsonNode join() {
+  /**
+   * Serializes the JSON response to a join request.
+   */
+  private void join() {
     // Create the arguments JSON object
     ObjectNode arguments = mapper.createObjectNode();
     arguments.put("name", this.player.name());
-    arguments.put("game-type", "SINGLE");
+    arguments.put("game-type", String.valueOf(GameType.SINGLE));
 
     MessageJson response = new MessageJson("join", arguments);
     JsonNode jsonResponse = JsonUtils.serializeRecord(response);
-    return jsonResponse;
+    this.out.println(jsonResponse);
   }
 
+  /**
+   * Handles the ending of a game.
+   *
+   * @param arguments
+   * @return
+   */
   private JsonNode endGame(JsonNode arguments) {
     String result = arguments.get("result").asText();
     String reason = arguments.get("reason").asText();
+
     if (result.equals("WIN")) {
       this.player.endGame(GameResult.WON, reason);
     }
+
     if (result.equals("DRAW")) {
       this.player.endGame(GameResult.DRAW, reason);
     }
+
     if (result.equals("LOSE")) {
       this.player.endGame(GameResult.LOST, reason);
     }
+
     ObjectNode returnArguments = mapper.createObjectNode();
     MessageJson response = new MessageJson("end-game", returnArguments);
     JsonNode jsonResponse = JsonUtils.serializeRecord(response);
