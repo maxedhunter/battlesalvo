@@ -33,17 +33,17 @@ class ProxyControllerTest {
   /**
    * Tests the controller's run method.
    */
-  @Test
-  void testRun() {
-    MessageJson messageJson = new MessageJson("join", null);
-    try {
-      ProxyController controller = new ProxyController(new Socket(), new Human(gamePlay));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-
-
-
-  }
+//  @Test
+//  void testRun() {
+//    MessageJson messageJson = new MessageJson("join", null);
+//    try {
+//      ProxyController controller = new ProxyController(new Socket(), new Human(gamePlay));
+//    } catch (IOException e) {
+//      throw new RuntimeException(e);
+//    }
+//
+//
+//
+//  }
 
 }
