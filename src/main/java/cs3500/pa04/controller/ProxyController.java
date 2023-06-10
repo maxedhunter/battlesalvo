@@ -4,11 +4,17 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import cs3500.pa03.model.Coord;
 import cs3500.pa03.model.GameResult;
 import cs3500.pa03.model.Player;
+import cs3500.pa03.model.Ship;
+import cs3500.pa03.model.ShipType;
+import cs3500.pa04.json.CoordinatesJson;
+import cs3500.pa04.json.FleetJson;
 import cs3500.pa04.json.GameType;
 import cs3500.pa04.json.JsonUtils;
 import cs3500.pa04.json.MessageJson;
+import cs3500.pa04.json.ShipAdapter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -73,14 +79,14 @@ public class ProxyController {
 
     if ("join".equals(name)) {
       join();
-//    } else if ("setup".equals(name)) {
-//      setup(arguments);
-//    } else if ("take-shots".equals(name)) {
-//      takeShot();
-//    } else if ("report-damage".equals(name)) {
-//      reportDamage(arguments);
-//    } else if ("successful-hits".equals(name)) {
-//      successfulHits(arguments);
+    } else if ("setup".equals(name)) {
+      setUp(arguments);
+    } else if ("take-shots".equals(name)) {
+      takeShots();
+    } else if ("report-damage".equals(name)) {
+      reportDamage(arguments);
+    } else if ("successful-hits".equals(name)) {
+      successfulHits(arguments);
     } else if ("end-game".equals(name)) {
       endGame(arguments);
     } else {
@@ -91,7 +97,7 @@ public class ProxyController {
   /**
    * Serializes the JSON response to a join request.
    */
-  private void join() {
+  public void join() {
     // Create the arguments JSON object
     ObjectNode arguments = mapper.createObjectNode();
     arguments.put("name", this.player.name());
@@ -102,13 +108,78 @@ public class ProxyController {
     this.out.println(jsonResponse);
   }
 
+  public void setUp(JsonNode arguments) {
+    int width = arguments.get("width").asInt();
+    int height = arguments.get("height").asInt();
+    JsonNode fleetSpecNode = arguments.get("fleet-spec");
+    int carrierCount = fleetSpecNode.get("CARRIER").asInt();
+    int battleshipCount = fleetSpecNode.get("BATTLESHIP").asInt();
+    int destroyerCount = fleetSpecNode.get("DESTROYER").asInt();
+    int submarineCount = fleetSpecNode.get("SUBMARINE").asInt();
+    Map<ShipType, Integer> fleetSpec = new HashMap<>();
+    fleetSpec.put(ShipType.CARRIER, carrierCount);
+    fleetSpec.put(ShipType.BATTLESHIP, battleshipCount);
+    fleetSpec.put(ShipType.DESTROYER, destroyerCount);
+    fleetSpec.put(ShipType.SUBMARINE, submarineCount);
+    List<Ship> ships = this.player.setup(height, width, fleetSpec);
+    List<ShipAdapter> fleet = new ArrayList<>();
+    for (Ship ship : ships) {
+      fleet.add(new ShipAdapter(ship));
+    }
+    FleetJson fleetJson = new FleetJson(fleet);
+    JsonNode fleetArg = mapper.convertValue(fleetJson, JsonNode.class);
+    MessageJson response = new MessageJson("setup", fleetArg);
+    JsonNode jsonResponse = JsonUtils.serializeRecord(response);
+    this.out.println(jsonResponse);
+  }
+
+  public void takeShots() {
+    List<Coord> shots = this.player.takeShots();
+    CoordinatesJson shotsJson = new CoordinatesJson(shots);
+    JsonNode shotsArg = mapper.convertValue(shotsJson, JsonNode.class);
+    MessageJson response = new MessageJson("take-shots", shotsArg);
+    JsonNode jsonResponse = JsonUtils.serializeRecord(response);
+    this.out.println(jsonResponse);
+  }
+
+  public void reportDamage(JsonNode arguments) {
+    JsonNode coordinatesNode = arguments.get("coordinates");
+    List<Coord> coords = new ArrayList<>();
+    for (JsonNode coordinateNode : coordinatesNode) {
+      int x = coordinateNode.get("x").asInt();
+      int y = coordinateNode.get("y").asInt();
+      coords.add(new Coord(x, y));
+    }
+    List<Coord> damaged = this.player.reportDamage(coords);
+    CoordinatesJson damagedJson = new CoordinatesJson(damaged);
+    JsonNode damagedArg = mapper.convertValue(damagedJson, JsonNode.class);
+    MessageJson response = new MessageJson("report-damage", damagedArg);
+    JsonNode jsonResponse = JsonUtils.serializeRecord(response);
+    this.out.println(jsonResponse);
+  }
+
+  public void successfulHits(JsonNode arguments) {
+    JsonNode coordinatesNode = arguments.get("coordinates");
+    List<Coord> hits = new ArrayList<>();
+    for (JsonNode coordinateNode : coordinatesNode) {
+      int x = coordinateNode.get("x").asInt();
+      int y = coordinateNode.get("y").asInt();
+      hits.add(new Coord(x, y));
+    }
+    this.player.successfulHits(hits);
+    ObjectNode returnArguments = mapper.createObjectNode();
+    MessageJson response = new MessageJson("successful-hits", returnArguments);
+    JsonNode jsonResponse = JsonUtils.serializeRecord(response);
+    this.out.println(jsonResponse);
+  }
+
   /**
    * Handles the ending of a game.
    *
    * @param arguments
    * @return
    */
-  private JsonNode endGame(JsonNode arguments) {
+  private void endGame(JsonNode arguments) {
     String result = arguments.get("result").asText();
     String reason = arguments.get("reason").asText();
 
@@ -127,6 +198,6 @@ public class ProxyController {
     ObjectNode returnArguments = mapper.createObjectNode();
     MessageJson response = new MessageJson("end-game", returnArguments);
     JsonNode jsonResponse = JsonUtils.serializeRecord(response);
-    return jsonResponse;
+    this.out.println(jsonResponse);
   }
 }
