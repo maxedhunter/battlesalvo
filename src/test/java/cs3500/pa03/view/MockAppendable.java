@@ -14,7 +14,7 @@ public class MockAppendable implements Appendable {
    *            {@code null}, then the four characters {@code "null"} are
    *            appended to this Appendable.
    * @return an exception
-   * @throws IOException
+   * @throws IOException always
    */
   @Override
   public Appendable append(CharSequence csq) throws IOException {
@@ -32,7 +32,7 @@ public class MockAppendable implements Appendable {
    * @param end   The index of the character following the last character in the
    *              subsequence
    * @return an IOException
-   * @throws IOException
+   * @throws IOException always
    */
   @Override
   public Appendable append(CharSequence csq, int start, int end) throws IOException {
@@ -44,7 +44,7 @@ public class MockAppendable implements Appendable {
    *
    * @param c The character to append
    * @return an IOException
-   * @throws IOException
+   * @throws IOException always
    */
   @Override
   public Appendable append(char c) throws IOException {

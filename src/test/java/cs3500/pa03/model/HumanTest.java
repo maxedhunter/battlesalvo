@@ -59,9 +59,6 @@ class HumanTest {
    */
   @Test
   public void takeShot() {
-    String inputString = "6 6\n1 1 1 1\n0 0 0 1 0 2 0 3 0 4";
-    Readable inputShots = new StringReader(inputString);
-
     List<Coord> shots = new ArrayList<>();
     shots.add(new Coord(0, 0));
     shots.add(new Coord(0, 1));
@@ -73,8 +70,10 @@ class HumanTest {
     fleet.put(ShipType.DESTROYER, 1);
     fleet.put(ShipType.SUBMARINE, 1);
 
+    String inputString = "6 6\n1 1 1 1\n0 0 0 1 0 2 0 3 0 4";
+    Readable inputShots = new StringReader(inputString);
     GamePlay gp1 = new GamePlay(inputShots, output);
-    gp1.getBoardSize();;
+    gp1.getBoardSize();
     gp1.getFleet();
 
     Human human1 = new Human(gp1);
