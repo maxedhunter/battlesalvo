@@ -16,5 +16,5 @@ import java.util.List;
  * @param shots
  */
 public record CoordinatesJson(
-    @JsonProperty("shots") List<Coord> shots) {
+    @JsonProperty("coordinates") List<Coord> shots) {
 }
