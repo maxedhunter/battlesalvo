@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class UserBoard implements Board {
   // height of the board
-  private int height;
+  private final int height;
   // width of the board
-  private int width;
+  private final int width;
   // the board grid
-  private char[][] grid;
+  private final char[][] grid;
   // positions occupied
-  private List<Coord> occupiedPositions = new ArrayList<>();
+  private final List<Coord> occupiedPositions = new ArrayList<>();
 
   /**
    * Constructor for UserBoard class, initializes the height, width, and grid
@@ -85,11 +85,7 @@ public class UserBoard implements Board {
         }
       }
     }
-    if (hit == occupiedPositions.size()) {
-      return true;
-    } else {
-      return false;
-    }
+    return hit == occupiedPositions.size();
   }
 
   /**
@@ -101,16 +97,16 @@ public class UserBoard implements Board {
   public void placeShip(Ship ship) {
     List<Coord> coords = ship.getOccupiedPositions();
     for (Coord pos : coords) {
-      if (ship.shipType == ShipType.CARRIER) {
+      if (ship.getShipType() == ShipType.CARRIER) {
         grid[pos.getY()][pos.getX()] = 'C';
       }
-      if (ship.shipType == ShipType.BATTLESHIP) {
+      if (ship.getShipType() == ShipType.BATTLESHIP) {
         grid[pos.getY()][pos.getX()] = 'B';
       }
-      if (ship.shipType == ShipType.DESTROYER) {
+      if (ship.getShipType() == ShipType.DESTROYER) {
         grid[pos.getY()][pos.getX()] = 'D';
       }
-      if (ship.shipType == ShipType.SUBMARINE) {
+      if (ship.getShipType() == ShipType.SUBMARINE) {
         grid[pos.getY()][pos.getX()] = 'S';
       }
       this.occupiedPositions.add(pos);

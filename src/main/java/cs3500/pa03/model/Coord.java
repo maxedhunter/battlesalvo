@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Coord {
   // the column the coordinate is on (x coordinate)
-  private final int x;
+  private final int coordX;
   // the row the coordinate is on (y coordinate)
-  private final int y;
+  private final int coordY;
 
   /**
    * Constructor for the Coord class, initializes row and col
@@ -21,8 +21,8 @@ public class Coord {
   @JsonCreator
   public Coord(@JsonProperty("x") int x,
                @JsonProperty("y") int y) {
-    this.x = x;
-    this.y = y;
+    this.coordX = x;
+    this.coordY = y;
   }
 
   /**
@@ -31,7 +31,7 @@ public class Coord {
    * @return row on the board
    */
   public int getX() {
-    return this.x;
+    return this.coordX;
   }
 
   /**
@@ -40,7 +40,7 @@ public class Coord {
    * @return column on the board
    */
   public int getY() {
-    return this.y;
+    return this.coordY;
   }
 
   /**

@@ -41,9 +41,9 @@ public class GamePlay {
   private List<Coord> aiShots = new ArrayList<>();
   // Display
   private final Display display;
-  Readable input;
-  Appendable output;
-  Scanner scanner;
+  private final Readable input;
+  private final Appendable output;
+  private final Scanner scanner;
 
   /**
    * Initializes a readable and appendable for game play.

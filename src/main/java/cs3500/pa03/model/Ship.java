@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class Ship {
   // type of the ship
-  ShipType shipType;
+  private final ShipType shipType;
   // positions that the ship occupied
   private List<Coord> occupiedPositions;
 
@@ -20,6 +20,15 @@ public class Ship {
   public Ship(ShipType type, List<Coord> occupied) {
     this.shipType = type;
     this.occupiedPositions = occupied;
+  }
+
+  /**
+   * Returns the ship type of a ship.
+   *
+   * @return ship type
+   */
+  public ShipType getShipType() {
+    return this.shipType;
   }
 
   /**

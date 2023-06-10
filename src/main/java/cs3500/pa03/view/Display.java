@@ -8,7 +8,7 @@ import java.io.IOException;
  * Represents a Display class that displays messages for the user.
  */
 public class Display {
-  Appendable output;
+  private final Appendable output;
 
   /**
    * Initializes the output stream.
@@ -43,7 +43,7 @@ public class Display {
     try {
       for (int i = 0; i < board.getHeight(); i++) {
         for (int j = 0; j < board.getWidth(); j++) {
-          output.append(grid[i][j] + " ");
+          output.append(String.valueOf(grid[i][j])).append(" ");
         }
         output.append(System.lineSeparator());
       }

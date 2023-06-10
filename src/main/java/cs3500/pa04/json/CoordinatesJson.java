@@ -10,10 +10,9 @@ import java.util.List;
  *    {"x": 4, "y": 2},
  *    {"x": 7, "y": 1}
  * ]
- *
  * Represents coordinates (a list of coords).
  *
- * @param shots
+ * @param shots list of coordinate shots
  */
 public record CoordinatesJson(
     @JsonProperty("coordinates") List<Coord> shots) {

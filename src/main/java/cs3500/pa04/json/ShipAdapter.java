@@ -12,10 +12,10 @@ import java.util.List;
  * Converts our ship into a server ship format for JSON.
  */
 public class ShipAdapter {
-  Coord coord;
-  int length;
-  Direction direction;
-  Ship ship;
+  private final Coord coord;
+  private final int length;
+  private final Direction direction;
+  private Ship ship;
 
   /**
    * Initializes the new ship format.
@@ -29,6 +29,13 @@ public class ShipAdapter {
     this.direction = initDirection();
   }
 
+  /**
+   * JSON constructor for ship.
+   *
+   * @param coord starting coord
+   * @param length length of a ship
+   * @param direction direction of a ship
+   */
   @JsonCreator
   public ShipAdapter(@JsonProperty("coord") Coord coord, @JsonProperty("length") int length,
                      @JsonProperty("direction") Direction direction) {
