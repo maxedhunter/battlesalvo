@@ -39,6 +39,8 @@ public class Driver {
       proxyController.run();
     } else if (args.length == 0) {
       gp.startGame();
+    } else {
+      throw new IllegalArgumentException("Please provide valid arguments");
     }
   }
 }
