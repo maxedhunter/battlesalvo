@@ -117,7 +117,6 @@ public class ProxyController {
    * @param arguments specifications for setup
    */
   public void setUp(JsonNode arguments) {
-    System.out.println(arguments);
     int width = arguments.get("width").asInt();
     int height = arguments.get("height").asInt();
     JsonNode fleetSpecNode = arguments.get("fleet-spec");
@@ -139,7 +138,6 @@ public class ProxyController {
     JsonNode fleetArg = mapper.convertValue(fleetJson, JsonNode.class);
     MessageJson response = new MessageJson("setup", fleetArg);
     JsonNode jsonResponse = JsonUtils.serializeRecord(response);
-    System.out.println(jsonResponse);
     this.out.println(jsonResponse);
   }
 
@@ -152,7 +150,6 @@ public class ProxyController {
     JsonNode shotsArg = mapper.convertValue(shotsJson, JsonNode.class);
     MessageJson response = new MessageJson("take-shots", shotsArg);
     JsonNode jsonResponse = JsonUtils.serializeRecord(response);
-    System.out.println(jsonResponse);
     this.out.println(jsonResponse);
   }
 
@@ -163,13 +160,11 @@ public class ProxyController {
    */
   public void reportDamage(JsonNode arguments) {
     CoordinatesJson coordinatesJson = mapper.convertValue(arguments, CoordinatesJson.class);
-    System.out.println(coordinatesJson);
     List<Coord> damaged = this.player.reportDamage(coordinatesJson.shots());
     CoordinatesJson damagedJson = new CoordinatesJson(damaged);
     JsonNode damagedArg = mapper.convertValue(damagedJson, JsonNode.class);
     MessageJson response = new MessageJson("report-damage", damagedArg);
     JsonNode jsonResponse = JsonUtils.serializeRecord(response);
-    System.out.println(jsonResponse);
     this.out.println(jsonResponse);
   }
 
@@ -179,7 +174,6 @@ public class ProxyController {
    * @param arguments the successful hits against the opponents
    */
   public void successfulHits(JsonNode arguments) {
-    System.out.println(arguments);
     JsonNode coordinatesNode = arguments.get("coordinates");
     List<Coord> hits = new ArrayList<>();
     for (JsonNode coordinateNode : coordinatesNode) {
@@ -191,7 +185,6 @@ public class ProxyController {
     ObjectNode returnArguments = mapper.createObjectNode();
     MessageJson response = new MessageJson("successful-hits", returnArguments);
     JsonNode jsonResponse = JsonUtils.serializeRecord(response);
-    System.out.println(jsonResponse);
     this.out.println(jsonResponse);
   }
 

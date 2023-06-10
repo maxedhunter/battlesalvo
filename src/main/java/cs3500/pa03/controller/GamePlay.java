@@ -186,7 +186,6 @@ public class GamePlay {
   public void gameLoop() {
     while (!userBoard.allSunk() && !aiBoard.allSunk()) {
       aiShots = computer.takeShots();
-      System.out.println(aiShots);
       playerShots = human.takeShots();
       display.showPrompt("Opponent Board Data:");
       aiBoard.updateMissed(playerShots);
