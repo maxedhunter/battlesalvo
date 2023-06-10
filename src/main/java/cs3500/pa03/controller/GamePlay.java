@@ -164,12 +164,12 @@ public class GamePlay {
   public void gameEnd(Board aiBoard, Board userBoard) {
     if (aiBoard.allSunk() && !userBoard.allSunk()) {
       display.showPrompt("Player won!");
-      human.endGame(GameResult.WON, "All of Opponent's ships are sunk!");
+      human.endGame(GameResult.WIN, "All of Opponent's ships are sunk!");
       computer.endGame(GameResult.LOST, "All of your ships are sunk!");
     }
     if (userBoard.allSunk() && !aiBoard.allSunk()) {
       display.showPrompt("AI won!");
-      computer.endGame(GameResult.WON, "All of Opponent's ships are sunk!");
+      computer.endGame(GameResult.WIN, "All of Opponent's ships are sunk!");
       human.endGame(GameResult.LOST, "All of your ships are sunk!");
     }
     if (userBoard.allSunk() && aiBoard.allSunk()) {

@@ -14,7 +14,7 @@ class GameResultTest {
    */
   @Test
   public void values() {
-    GameResult[] expectedOrder = {GameResult.WON,
+    GameResult[] expectedOrder = {GameResult.WIN,
         GameResult.DRAW,
         GameResult.LOST};
     GameResult[] actualOrder = GameResult.values();
@@ -26,7 +26,7 @@ class GameResultTest {
    */
   @Test
   public void valueOf() {
-    assertEquals(GameResult.WON, GameResult.valueOf("WON"));
+    assertEquals(GameResult.WIN, GameResult.valueOf("WIN"));
     assertEquals(GameResult.DRAW, GameResult.valueOf("DRAW"));
     assertEquals(GameResult.LOST, GameResult.valueOf("LOST"));
   }

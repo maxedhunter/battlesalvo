@@ -34,15 +34,12 @@ public class ProxyController {
   private final Player player;
   private final ObjectMapper mapper = new ObjectMapper();
 
-  private static final JsonNode VOID_RESPONSE =
-      new ObjectMapper().getNodeFactory().textNode("void");
-
   /**
    * Construct an instance of a ProxyPlayer.
    *
    * @param server the socket connection to the server
    * @param player the instance of the player
-   * @throws IOException if
+   * @throws IOException if a stream error occurs
    */
   public ProxyController(Socket server, Player player) throws IOException {
     this.server = server;
@@ -198,7 +195,7 @@ public class ProxyController {
     String reason = arguments.get("reason").asText();
 
     if (result.equals("WIN")) {
-      this.player.endGame(GameResult.WON, reason);
+      this.player.endGame(GameResult.WIN, reason);
     }
 
     if (result.equals("DRAW")) {

@@ -9,6 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cs3500.pa03.controller.GamePlay;
 import cs3500.pa03.model.Ai;
+import cs3500.pa03.model.Coord;
+import cs3500.pa03.model.GameResult;
+import cs3500.pa03.model.ShipType;
+import cs3500.pa04.json.CoordinatesJson;
+import cs3500.pa04.json.EndGameJson;
 import cs3500.pa04.json.FleetJson;
 import cs3500.pa04.json.JsonUtils;
 import cs3500.pa04.json.MessageJson;
@@ -17,7 +22,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,11 +37,9 @@ import org.junit.jupiter.api.Test;
 class ProxyControllerTest {
   private ByteArrayOutputStream testLog;
   private ProxyController controller;
-
-  private Readable input;
-  private Appendable output;
   GamePlay gamePlay;
   private final ObjectMapper mapper = new ObjectMapper();
+  Map<ShipType, Integer> fleet;
 
 
   /**
@@ -40,11 +47,16 @@ class ProxyControllerTest {
    */
   @BeforeEach
   public void setUp() {
-    input = new StringReader("");
-    output = new StringBuilder();
+    Readable input = new StringReader("");
+    Appendable output = new StringBuilder();
     gamePlay = new GamePlay(input, output);
     testLog = new ByteArrayOutputStream(2048);
     assertEquals("", logToString());
+    fleet = new HashMap<>();
+    fleet.put(ShipType.CARRIER, 2);
+    fleet.put(ShipType.BATTLESHIP, 4);
+    fleet.put(ShipType.DESTROYER, 1);
+    fleet.put(ShipType.SUBMARINE, 3);
   }
 
   /**
@@ -111,7 +123,106 @@ class ProxyControllerTest {
    */
   @Test
   void testTakeShots() {
+    Ai ai = new Ai(gamePlay);
+    ai.setup(10, 10, fleet);
 
+    JsonNode messageJson = createSampleMessage("take-shots", null);
+
+    Mocket socket = new Mocket(this.testLog, List.of(messageJson.toString()));
+
+    try {
+      controller = new ProxyController(socket, ai);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    this.controller.run();
+
+    // tests if a coordinates json is returned to the server
+    responseToClass(CoordinatesJson.class);
+  }
+
+  /**
+   * Tests reporting damage.
+   */
+  @Test
+  void testReportDamage() {
+    Ai ai = new Ai(gamePlay);
+    ai.setup(10, 10, fleet);
+
+    List<Coord> coords = new ArrayList<>(
+        Arrays.asList(new Coord(0, 0), new Coord(0, 1), new Coord(0, 2),
+            new Coord(0, 3), new Coord(0, 4), new Coord(0, 5)));
+
+    CoordinatesJson coordinatesJson = new CoordinatesJson(coords);
+    JsonNode messageJson = createSampleMessage("report-damage", coordinatesJson);
+
+    Mocket socket = new Mocket(this.testLog, List.of(messageJson.toString()));
+
+    try {
+      controller = new ProxyController(socket, ai);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    this.controller.run();
+
+    // tests if a coordinates json is returned to the server
+    responseToClass(CoordinatesJson.class);
+  }
+
+  /**
+   * Tests reporting successful hits.
+   */
+  @Test
+  void testSuccessfulHits() {
+    Ai ai = new Ai(gamePlay);
+    ai.setup(10, 10, fleet);
+
+    List<Coord> coords = new ArrayList<>(
+        Arrays.asList(new Coord(0, 0), new Coord(0, 1), new Coord(0, 2),
+            new Coord(0, 3), new Coord(0, 4), new Coord(0, 5)));
+
+    CoordinatesJson coordinatesJson = new CoordinatesJson(coords);
+    JsonNode messageJson = createSampleMessage("successful-hits", coordinatesJson);
+
+    Mocket socket = new Mocket(this.testLog, List.of(messageJson.toString()));
+
+    try {
+      controller = new ProxyController(socket, ai);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    this.controller.run();
+
+    // tests if a coordinates json is returned to the server
+    responseToClass(CoordinatesJson.class);
+  }
+
+  /**
+   * Tests the game end response.
+   */
+  @Test
+  void testEndGame() {
+    Ai ai = new Ai(gamePlay);
+    EndGameJson endGameJson =
+        new EndGameJson(String.valueOf(GameResult.WIN),
+            "Player 1 sank all of Player 2's ships");
+
+    JsonNode messageJson = createSampleMessage("end-game", endGameJson);
+
+    Mocket socket = new Mocket(this.testLog, List.of(messageJson.toString()));
+
+    try {
+      controller = new ProxyController(socket, ai);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    this.controller.run();
+
+    assertEquals("{\"method-name\":\"end-game\",\"arguments\":{}}\n", logToString());
   }
 
   /**

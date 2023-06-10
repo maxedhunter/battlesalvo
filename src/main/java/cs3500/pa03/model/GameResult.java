@@ -5,9 +5,9 @@ package cs3500.pa03.model;
  */
 public enum GameResult {
   /**
-   * Player won
+   * Player win
    */
-  WON,
+  WIN,
   /**
    * Draw
    */
