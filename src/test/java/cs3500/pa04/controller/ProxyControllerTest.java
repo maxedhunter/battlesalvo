@@ -6,13 +6,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import cs3500.pa03.controller.GamePlay;
 import cs3500.pa03.model.Ai;
+import cs3500.pa04.json.FleetJson;
 import cs3500.pa04.json.JsonUtils;
 import cs3500.pa04.json.MessageJson;
+import cs3500.pa04.json.SetupJson;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +32,8 @@ class ProxyControllerTest {
   private Readable input;
   private Appendable output;
   GamePlay gamePlay;
+  private final ObjectMapper mapper = new ObjectMapper();
+
 
   /**
    * Initializes gp, human, and the fleet
@@ -65,11 +71,48 @@ class ProxyControllerTest {
     assertEquals(expected, logToString());
   }
 
+  /**
+   * Tests setting up a fleet.
+   */
   @Test
   void testSetUp() {
+    // create the setup request
+    ObjectNode fleetSpec = mapper.createObjectNode();
+    fleetSpec.put("CARRIER", 2);
+    fleetSpec.put("BATTLESHIP", 4);
+    fleetSpec.put("DESTROYER", 1);
+    fleetSpec.put("SUBMARINE", 3);
 
+    SetupJson setUpRequest = new SetupJson(10, 10, fleetSpec);
+    JsonNode request = createSampleMessage("setup", setUpRequest);
+
+    // make sure the correct setup is being passed in
+    assertEquals(
+        "{\"method-name\":\"setup\",\"arguments\":{\"width\":10,\"height\":10,\""
+            + "fleet-spec\":{\"CARRIER\":2,\"BATTLESHIP\":4,\"DESTROYER\":1,\"SUBMARINE\":3}}}",
+        request.toString());
+
+    Mocket socket = new Mocket(this.testLog, List.of(request.toString()));
+
+    try {
+      controller = new ProxyController(socket, new Ai(gamePlay));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    this.controller.run();
+
+    // tests if a fleet json is returned to the server
+    responseToClass(FleetJson.class);
   }
 
+  /**
+   * Tests for returning shots to the server.
+   */
+  @Test
+  void testTakeShots() {
+
+  }
 
   /**
    * Converts the ByteArrayOutputStream log to a string in UTF_8 format
@@ -77,11 +120,13 @@ class ProxyControllerTest {
    * @return String representing the current log buffer
    */
   private String logToString() {
-    return testLog.toString();
+    return testLog.toString(StandardCharsets.UTF_8);
   }
 
   /**
-   * Try converting the current test log to a string of a certain class.
+   * Try converting the current test log to a string of a certain class. Modified from
+   * mock example since each JSON is in MessageJson, this code goes one level deeper
+   * and attempts to parse the MessageJson arguments.
    *
    * @param classRef Type to try converting the current test stream to.
    * @param <T>      Type to try converting the current test stream to.
@@ -89,8 +134,13 @@ class ProxyControllerTest {
   private <T> void responseToClass(@SuppressWarnings("SameParameterValue") Class<T> classRef) {
     try {
       JsonParser jsonParser = new ObjectMapper().createParser(logToString());
-      jsonParser.readValueAs(classRef);
-      // No error thrown when parsing to a GuessJson, test passes!
+
+      // first convert to MessageJson
+      MessageJson messageJson = jsonParser.readValueAs(MessageJson.class);
+
+      // now parse arguments of MessageJson
+      JsonParser jsonParser1 = new ObjectMapper().createParser(messageJson.arguments().toString());
+      jsonParser1.readValueAs(classRef);
     } catch (IOException e) {
       // Could not read
       // -> exception thrown
@@ -111,6 +161,4 @@ class ProxyControllerTest {
         new MessageJson(messageName, JsonUtils.serializeRecord(messageObject));
     return JsonUtils.serializeRecord(messageJson);
   }
-
-
 }

@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a proxy controller for a battle salvo game.
+ */
 public class ProxyController {
   private final Socket server;
   private final InputStream in;
@@ -108,6 +111,11 @@ public class ProxyController {
     this.out.println(jsonResponse);
   }
 
+  /**
+   * Parses the setup argument, returns a Fleet JSON to the server.
+   *
+   * @param arguments specifications for setup
+   */
   public void setUp(JsonNode arguments) {
     System.out.println(arguments);
     int width = arguments.get("width").asInt();
@@ -135,6 +143,9 @@ public class ProxyController {
     this.out.println(jsonResponse);
   }
 
+  /**
+   * Gives the server the AI's shots.
+   */
   public void takeShots() {
     List<Coord> shots = this.player.takeShots();
     CoordinatesJson shotsJson = new CoordinatesJson(shots);
@@ -145,6 +156,11 @@ public class ProxyController {
     this.out.println(jsonResponse);
   }
 
+  /**
+   * Reports the damage back to the server.
+   *
+   * @param arguments the shots taken by the other player (or server).
+   */
   public void reportDamage(JsonNode arguments) {
     CoordinatesJson coordinatesJson = mapper.convertValue(arguments, CoordinatesJson.class);
     System.out.println(coordinatesJson);
@@ -157,6 +173,11 @@ public class ProxyController {
     this.out.println(jsonResponse);
   }
 
+  /**
+   * Provides the AI with the successful hits against the opponent.
+   *
+   * @param arguments the successful hits against the opponents
+   */
   public void successfulHits(JsonNode arguments) {
     System.out.println(arguments);
     JsonNode coordinatesNode = arguments.get("coordinates");
@@ -177,8 +198,7 @@ public class ProxyController {
   /**
    * Handles the ending of a game.
    *
-   * @param arguments
-   * @return
+   * @param arguments the result and reason
    */
   private void endGame(JsonNode arguments) {
     String result = arguments.get("result").asText();

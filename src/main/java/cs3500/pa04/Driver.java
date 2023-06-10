@@ -29,9 +29,8 @@ public class Driver {
   public static void main(String[] args) throws IOException {
     Appendable output = System.out;
     Readable input = new InputStreamReader(System.in);
-//
     GamePlay gp = new GamePlay(input, output);
-//    gp.startGame();
+    //    gp.startGame();
 
     List<Coord> coords =
         new ArrayList<>(Arrays.asList(new Coord(0, 0),
@@ -40,7 +39,7 @@ public class Driver {
     ShipAdapter shipAdapter = new ShipAdapter(ship);
     ObjectMapper mapper = new ObjectMapper();
 
-    System.out.println(mapper.writeValueAsString(new Coord(0,0)));
+    System.out.println(mapper.writeValueAsString(new Coord(0, 0)));
     System.out.println(
         mapper.writeValueAsString(shipAdapter));
     System.out.println(mapper.writeValueAsString(coords));
@@ -51,8 +50,8 @@ public class Driver {
     fleet.add(new ShipAdapter(ship));
     System.out.println(mapper.writeValueAsString(fleet));
     Socket server = new Socket("0.0.0.0", 35001);
-    Player Ai = new Ai(gp);
-    ProxyController proxyController = new ProxyController(server, Ai);
+    Player ai = new Ai(gp);
+    ProxyController proxyController = new ProxyController(server, ai);
     proxyController.run();
   }
 }

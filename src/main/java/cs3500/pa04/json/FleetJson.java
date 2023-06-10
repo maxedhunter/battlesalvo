@@ -10,7 +10,6 @@ import java.util.List;
  *    "length":3,
  *    "direction":"VERTICAL"}
  * ]
- *
  * Represents fleet (a list of ships).
  *
  * @param fleet the fleet of the player
