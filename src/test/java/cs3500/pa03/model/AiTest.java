@@ -39,7 +39,7 @@ class AiTest {
    */
   @Test
   public void testName() {
-    assertEquals("AI", computer.name());
+    assertEquals("shuerry", computer.name());
   }
 
   /**
