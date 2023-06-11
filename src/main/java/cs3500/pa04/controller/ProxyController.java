@@ -171,14 +171,8 @@ public class ProxyController {
    * @param arguments the successful hits against the opponents
    */
   public void successfulHits(JsonNode arguments) {
-    JsonNode coordinatesNode = arguments.get("coordinates");
-    List<Coord> hits = new ArrayList<>();
-    for (JsonNode coordinateNode : coordinatesNode) {
-      int x = coordinateNode.get("x").asInt();
-      int y = coordinateNode.get("y").asInt();
-      hits.add(new Coord(x, y));
-    }
-    this.player.successfulHits(hits);
+    CoordinatesJson coordinatesJson = mapper.convertValue(arguments, CoordinatesJson.class);
+    this.player.successfulHits(coordinatesJson.shots());
     ObjectNode returnArguments = mapper.createObjectNode();
     MessageJson response = new MessageJson("successful-hits", returnArguments);
     JsonNode jsonResponse = JsonUtils.serializeRecord(response);
@@ -203,7 +197,7 @@ public class ProxyController {
     }
 
     if (result.equals("LOSE")) {
-      this.player.endGame(GameResult.LOST, reason);
+      this.player.endGame(GameResult.LOSE, reason);
     }
 
     ObjectNode returnArguments = mapper.createObjectNode();

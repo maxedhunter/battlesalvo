@@ -84,6 +84,6 @@ class AiTest {
     List<Coord> successfulHit = new ArrayList<>();
     computer.successfulHits(successfulHit);
     assertEquals(18, computer.reportDamage(opponentShotsOnBoard).size());
-    computer.endGame(GameResult.LOST, "All ships are sunk");
+    computer.endGame(GameResult.LOSE, "All ships are sunk");
   }
 }

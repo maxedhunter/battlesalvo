@@ -16,7 +16,7 @@ class GameResultTest {
   public void values() {
     GameResult[] expectedOrder = {GameResult.WIN,
         GameResult.DRAW,
-        GameResult.LOST};
+        GameResult.LOSE};
     GameResult[] actualOrder = GameResult.values();
     assertArrayEquals(expectedOrder, actualOrder);
   }
@@ -28,7 +28,7 @@ class GameResultTest {
   public void valueOf() {
     assertEquals(GameResult.WIN, GameResult.valueOf("WIN"));
     assertEquals(GameResult.DRAW, GameResult.valueOf("DRAW"));
-    assertEquals(GameResult.LOST, GameResult.valueOf("LOST"));
+    assertEquals(GameResult.LOSE, GameResult.valueOf("LOSE"));
   }
 
 }

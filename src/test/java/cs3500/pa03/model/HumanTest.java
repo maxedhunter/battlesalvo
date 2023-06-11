@@ -97,6 +97,6 @@ class HumanTest {
     List<Coord> successfulHit = new ArrayList<>();
     human.successfulHits(successfulHit);
     assertEquals(18, human.reportDamage(opponentShotsOnBoard).size());
-    human.endGame(GameResult.LOST, "All ships are sunk");
+    human.endGame(GameResult.LOSE, "All ships are sunk");
   }
 }

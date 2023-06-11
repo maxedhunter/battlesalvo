@@ -201,14 +201,64 @@ class ProxyControllerTest {
   }
 
   /**
-   * Tests the game end response.
+   * Tests the game end response when the player wins.
    */
   @Test
-  void testEndGame() {
+  void testEndGameWin() {
     Ai ai = new Ai(gamePlay);
     EndGameJson endGameJson =
         new EndGameJson(String.valueOf(GameResult.WIN),
             "Player 1 sank all of Player 2's ships");
+
+    JsonNode messageJson = createSampleMessage("end-game", endGameJson);
+
+    Mocket socket = new Mocket(this.testLog, List.of(messageJson.toString()));
+
+    try {
+      controller = new ProxyController(socket, ai);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    this.controller.run();
+
+    assertEquals("{\"method-name\":\"end-game\",\"arguments\":{}}\n", logToString());
+  }
+
+  /**
+   * Tests the game end response when it's draw.
+   */
+  @Test
+  void testEndGameDraw() {
+    Ai ai = new Ai(gamePlay);
+    EndGameJson endGameJson =
+        new EndGameJson(String.valueOf(GameResult.DRAW),
+            "Draw");
+
+    JsonNode messageJson = createSampleMessage("end-game", endGameJson);
+
+    Mocket socket = new Mocket(this.testLog, List.of(messageJson.toString()));
+
+    try {
+      controller = new ProxyController(socket, ai);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    this.controller.run();
+
+    assertEquals("{\"method-name\":\"end-game\",\"arguments\":{}}\n", logToString());
+  }
+
+  /**
+   * Tests the game end response when the player loses.
+   */
+  @Test
+  void testEndGameLost() {
+    Ai ai = new Ai(gamePlay);
+    EndGameJson endGameJson =
+        new EndGameJson(String.valueOf(GameResult.LOSE),
+            "Player 2 sank all of Player 1's ships");
 
     JsonNode messageJson = createSampleMessage("end-game", endGameJson);
 

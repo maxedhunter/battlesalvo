@@ -165,12 +165,12 @@ public class GamePlay {
     if (aiBoard.allSunk() && !userBoard.allSunk()) {
       display.showPrompt("Player won!");
       human.endGame(GameResult.WIN, "All of Opponent's ships are sunk!");
-      computer.endGame(GameResult.LOST, "All of your ships are sunk!");
+      computer.endGame(GameResult.LOSE, "All of your ships are sunk!");
     }
     if (userBoard.allSunk() && !aiBoard.allSunk()) {
       display.showPrompt("AI won!");
       computer.endGame(GameResult.WIN, "All of Opponent's ships are sunk!");
-      human.endGame(GameResult.LOST, "All of your ships are sunk!");
+      human.endGame(GameResult.LOSE, "All of your ships are sunk!");
     }
     if (userBoard.allSunk() && aiBoard.allSunk()) {
       display.showPrompt("Draw!");

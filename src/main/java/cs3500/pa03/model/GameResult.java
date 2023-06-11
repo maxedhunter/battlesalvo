@@ -13,7 +13,7 @@ public enum GameResult {
    */
   DRAW,
   /**
-   * Player lost
+   * Player lose
    */
-  LOST
+  LOSE
 }
